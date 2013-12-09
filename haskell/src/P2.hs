@@ -41,4 +41,8 @@ myButLast'''' [] = error "No elements"
 myButLast'''' (_:[]) = error "Only one element"
 myButLast'''' list  = head $ tail $ reverse list
 
+myButLast''''' :: [a] -> a
+myButLast''''' [] = error "No elements"
+myButLast''''' (_:[]) = error "Only one element"
+myButLast''''' list  = last $ init $ list 
 

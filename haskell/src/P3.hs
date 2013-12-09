@@ -27,4 +27,19 @@ elementAt' [] _ = error "No elements"
 elementAt' list el
             | el > (length list) || el <= 0 = error "Out of bounds"
             | otherwise = list !! (el - 1)
-          
+            
+           
+elementAt'' :: [b] -> Int -> b
+elementAt'' [] _ = error "No elements"
+elementAt'' list el
+            | el > (length list) || el <= 0 = error "Out of bounds"
+            | otherwise = head $ drop (el - 1) list          
+            
+elementAt''' :: [b] -> Int -> b
+elementAt''' [] _ = error "No elements"
+elementAt''' list el
+            | el > (length list) || el <= 0 = error "Out of bounds"
+            | otherwise = head $ reverse $ take el list   
+            
+            
+            
