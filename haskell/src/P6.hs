@@ -26,5 +26,25 @@ isPalindrome list =
                       splittedList = splitAt ((length list) `div` 2) list
                       rightPartEvenLength = reverse (snd splittedList)
                       rightPartOddLength = (reverse $ tail $ snd splittedList) -- since it breaks like [1,2] [3,2,1]
+                      
+isPalindrome' :: (Eq a) => [a] -> Bool
+isPalindrome' xs = and $ zipWith (==) xs (reverse xs)                 
 
-                
+isPalindrome'' :: (Eq a) => [a] -> Bool
+isPalindrome'' xs = foldr1 (&&) (zipWith (==) xs (reverse xs))
+
+isPalindrome''' :: (Eq a) => [a] -> Bool
+isPalindrome''' list = foldl (\acc (x,y) -> (x == y) && acc) True zippedList                    
+                        where zippedList = list `zip` (reverse list)
+                        
+isPalindrome'''' :: (Eq a) => [a] -> Bool
+isPalindrome'''' [] = True
+isPalindrome'''' [_] = True
+isPalindrome'''' x = (head x) == (last x) && (isPalindrome'''' $ init $ tail x) 
+
+
+
+
+
+
+                                 
