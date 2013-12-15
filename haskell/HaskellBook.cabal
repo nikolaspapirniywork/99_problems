@@ -18,5 +18,6 @@ executable HaskellBook
                    P4,
                    P5,
                    P6,
-                   P7
+                   P7,
+                   P8
 
