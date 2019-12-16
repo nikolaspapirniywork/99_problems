@@ -1,14 +1,14 @@
-package data_structures
+package list
 
 import (
-	"github.com/99_problems/go/src/utils"
+	"github.com/99_problems/go/src/data_structures"
 	"log"
 )
 
 const initialCapacity = 10
 
 type ArrayList struct {
-	arr      []utils.Any
+	arr      []data_structures.Any
 	size     int
 	capacity int
 }
@@ -18,7 +18,7 @@ func NewArrayList() *ArrayList {
 }
 
 func NewArrayListWithCapacity(capacity int) *ArrayList {
-	initial := make([]utils.Any, capacity)
+	initial := make([]data_structures.Any, capacity)
 
 	return &ArrayList{
 		arr:      initial,
@@ -33,7 +33,7 @@ func (list *ArrayList) Size() int {
 
 func (list *ArrayList) resize() {
 	newCapacity := list.capacity * 2
-	newArray := make([]utils.Any, newCapacity)
+	newArray := make([]data_structures.Any, newCapacity)
 
 	copy(newArray[0:list.Size()], list.arr[0:list.Size()])
 
@@ -41,7 +41,7 @@ func (list *ArrayList) resize() {
 	list.capacity = newCapacity
 }
 
-func (list *ArrayList) Add(obj utils.Any) {
+func (list *ArrayList) Add(obj data_structures.Any) {
 	if list.Size() == list.capacity {
 		list.resize()
 	}
@@ -50,7 +50,7 @@ func (list *ArrayList) Add(obj utils.Any) {
 	list.size += 1
 }
 
-func (list *ArrayList) Remove(idx int) utils.Any {
+func (list *ArrayList) Remove(idx int) data_structures.Any {
 	oldValue := list.Get(idx)
 
 	for i := idx; i < list.Size()-1; i++ {
@@ -63,7 +63,7 @@ func (list *ArrayList) Remove(idx int) utils.Any {
 	return oldValue
 }
 
-func (list *ArrayList) Find(obj utils.Any) int {
+func (list *ArrayList) Find(obj data_structures.Any) int {
 	for i, value := range list.arr {
 		if value == obj {
 			return i
@@ -80,7 +80,7 @@ func (list *ArrayList) IsEmpty() bool {
 	return false
 }
 
-func (list *ArrayList) Get(idx int) utils.Any {
+func (list *ArrayList) Get(idx int) data_structures.Any {
 	if idx < 0 || idx >= list.capacity {
 		panic("Index out of bound exception")
 	}
@@ -107,7 +107,7 @@ func (it arrayListIterator) HasNext() bool {
 	return false
 }
 
-func (it *arrayListIterator) Next() utils.Any {
+func (it *arrayListIterator) Next() data_structures.Any {
 	if !it.isWithinRange() {
 		panic("Iterator is out of bounds")
 	}
@@ -124,7 +124,7 @@ func (list ArrayList) Iterator() Iterator {
 	return &arrayListIterator{-1, list}
 }
 
-func (list *ArrayList) Filter(checker func(utils.Any) bool) List {
+func (list *ArrayList) Filter(checker func(data_structures.Any) bool) List {
 	var count int
 	for i := 0; i < list.Size(); i++ {
 		if checker(list.Get(i)) {

@@ -1,14 +1,14 @@
-package data_structures_test
+package hash_map_test
 
 import (
-	"github.com/99_problems/go/src/data_structures"
+	"github.com/99_problems/go/src/data_structures/hash_map"
 	"github.com/stretchr/testify/assert"
 	"strconv"
 	"testing"
 )
 
 func TestHashMap(t *testing.T) {
-	hashMap := data_structures.NewHashMap()
+	hashMap := hash_map.New()
 	hashMap.Put("key", 123)
 	assert.Equal(t, 123, hashMap.Get("key"))
 	assert.Nil(t, hashMap.Get("not_exists"))
@@ -17,7 +17,7 @@ func TestHashMap(t *testing.T) {
 }
 
 func TestHashMapDistribution(t *testing.T) {
-	hashMap := data_structures.NewHashMap()
+	hashMap := hash_map.New()
 	put100(hashMap)
 	distribution := hashMap.BucketDistribution()
 
@@ -34,7 +34,7 @@ func TestHashMapDistribution(t *testing.T) {
 }
 
 func TestHashMapRemove(t *testing.T) {
-	hashMap := data_structures.NewHashMap()
+	hashMap := hash_map.New()
 	hashMap.Put("key", 123)
 	assert.Equal(t, 123, hashMap.Get("key"))
 	assert.Nil(t, hashMap.Get("not_exists"))
@@ -43,14 +43,14 @@ func TestHashMapRemove(t *testing.T) {
 }
 
 func TestHashMapRemoveMany(t *testing.T) {
-	hashMap := data_structures.NewHashMap()
+	hashMap := hash_map.New()
 	put100(hashMap)
 	remove100(t, hashMap)
 	assert.Equal(t, 0, hashMap.Size())
 }
 
 func TestHashMapCapacity(t *testing.T) {
-	hashMap := data_structures.NewHashMap()
+	hashMap := hash_map.New()
 	assert.Equal(t, 10, hashMap.Capacity())
 
 	put100(hashMap)
@@ -64,13 +64,13 @@ func TestHashMapCapacity(t *testing.T) {
 	assert.Equal(t, 20, hashMap.Capacity())
 }
 
-func remove100(t *testing.T, hashMap *data_structures.HashMap) {
+func remove100(t *testing.T, hashMap *hash_map.HashMap) {
 	for i := 0; i < 100; i++ {
 		assert.NotNil(t, hashMap.Remove("key "+strconv.Itoa(i)))
 	}
 }
 
-func put100(hashMap *data_structures.HashMap) {
+func put100(hashMap *hash_map.HashMap) {
 	for i := 0; i < 100; i++ {
 		hashMap.Put("key "+strconv.Itoa(i), i)
 	}

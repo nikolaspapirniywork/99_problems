@@ -1,11 +1,11 @@
-package data_structures
+package list
 
 import (
-	"github.com/99_problems/go/src/utils"
+	"github.com/99_problems/go/src/data_structures"
 )
 
 type Node struct {
-	Value    utils.Any
+	Value    data_structures.Any
 	Previous *Node
 	Next     *Node
 }
@@ -34,7 +34,7 @@ func (list *LinkedList) IsEmpty() bool {
 	return false
 }
 
-func (list *LinkedList) Add(obj utils.Any) {
+func (list *LinkedList) Add(obj data_structures.Any) {
 	if list.IsEmpty() {
 		node := &Node{Value: obj}
 		list.head = node
@@ -55,12 +55,12 @@ func isNodeInTheMiddle(list *LinkedList, node *Node) bool {
 	return false
 }
 
-func (list *LinkedList) Remove(idx int) utils.Any {
+func (list *LinkedList) Remove(idx int) data_structures.Any {
 	node := list.get(idx)
-	return list.remove(node)
+	return list.RemoveNode(node)
 }
 
-func (list *LinkedList) Filter(checker func(utils.Any) bool) List {
+func (list *LinkedList) Filter(checker func(data_structures.Any) bool) List {
 	newList := NewLinkedList()
 	iterator := list.Iterator()
 
@@ -74,7 +74,7 @@ func (list *LinkedList) Filter(checker func(utils.Any) bool) List {
 	return newList
 }
 
-func (list *LinkedList) Find(checker func(utils.Any) bool) utils.Any {
+func (list *LinkedList) Find(checker func(data_structures.Any) bool) data_structures.Any {
 	iterator := list.Iterator()
 
 	for iterator.HasNext() {
@@ -87,17 +87,17 @@ func (list *LinkedList) Find(checker func(utils.Any) bool) utils.Any {
 	return nil
 }
 
-func (list *LinkedList) RemoveObject(obj utils.Any) utils.Any {
-	node := list.find(func(value utils.Any) bool {
+func (list *LinkedList) RemoveObject(obj data_structures.Any) data_structures.Any {
+	node := list.FindNode(func(value data_structures.Any) bool {
 		if value == obj {
 			return true
 		}
 		return false
 	})
-	return list.remove(node)
+	return list.RemoveNode(node)
 }
 
-func (list *LinkedList) remove(node *Node) utils.Any {
+func (list *LinkedList) RemoveNode(node *Node) data_structures.Any {
 	if node == nil {
 		return nil
 	}
@@ -135,7 +135,7 @@ func (list *LinkedList) remove(node *Node) utils.Any {
 	return node.Value
 }
 
-func (list *LinkedList) find(predicate func(utils.Any) bool) *Node {
+func (list *LinkedList) FindNode(predicate func(data_structures.Any) bool) *Node {
 	if list.IsEmpty() {
 		return nil
 	}
@@ -166,7 +166,7 @@ func (list *LinkedList) get(idx int) *Node {
 	return current
 }
 
-func (list *LinkedList) Get(idx int) utils.Any {
+func (list *LinkedList) Get(idx int) data_structures.Any {
 	return list.get(idx).Value
 }
 
@@ -186,7 +186,7 @@ func (it linkedListIterator) HasNext() bool {
 	return false
 }
 
-func (it *linkedListIterator) Next() utils.Any {
+func (it *linkedListIterator) Next() data_structures.Any {
 	if !it.nextNode.hasNext() {
 		panic("Iterator is out of bounds")
 	}

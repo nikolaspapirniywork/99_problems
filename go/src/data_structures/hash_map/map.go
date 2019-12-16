@@ -1,18 +1,19 @@
-package data_structures
+package hash_map
 
 import (
-	"github.com/99_problems/go/src/utils"
+	"github.com/99_problems/go/src/data_structures"
+	"github.com/99_problems/go/src/data_structures/list"
 	"math"
 )
 
 type Map interface {
-	Put(key utils.Any, value utils.Any)
-	Get(key utils.Any) utils.Any
-	Remove(key utils.Any) utils.Any
+	Put(key data_structures.Any, value data_structures.Any)
+	Get(key data_structures.Any) data_structures.Any
+	Remove(key data_structures.Any) data_structures.Any
 	Size() int
 	Capacity() int
 	IsEmpty() bool
-	BucketDistribution() List
+	BucketDistribution() list.List
 	Ratio() float64
 }
 
@@ -21,8 +22,8 @@ const lowerThreshold = 0.3
 const upperThreshold = 0.7
 
 type MapEntry struct {
-	Key   utils.Any
-	Value utils.Any
+	Key   data_structures.Any
+	Value data_structures.Any
 }
 
 func CopyMapEntry(entry MapEntry) *MapEntry {
@@ -30,24 +31,24 @@ func CopyMapEntry(entry MapEntry) *MapEntry {
 }
 
 type HashMap struct {
-	buckets []*LinkedList
+	buckets []*list.LinkedList
 	size    int
 }
 
-func NewHashMap() *HashMap {
+func New() *HashMap {
 	buckets := initBuckets(mapInitialCapacity)
 	return &HashMap{buckets, 0}
 }
 
-func initBuckets(size int) []*LinkedList {
-	buckets := make([]*LinkedList, size)
+func initBuckets(size int) []*list.LinkedList {
+	buckets := make([]*list.LinkedList, size)
 	for i, _ := range buckets {
-		buckets[i] = NewLinkedList()
+		buckets[i] = list.NewLinkedList()
 	}
 	return buckets
 }
 
-func (m HashMap) Get(key utils.Any) utils.Any {
+func (m HashMap) Get(key data_structures.Any) data_structures.Any {
 	bucket := m.getBucket(key)
 	if bucket.IsEmpty() {
 		return nil
@@ -65,13 +66,13 @@ func (m HashMap) Get(key utils.Any) utils.Any {
 	return nil
 }
 
-func (m *HashMap) Remove(key utils.Any) utils.Any {
+func (m *HashMap) Remove(key data_structures.Any) data_structures.Any {
 	bucket := m.getBucket(key)
 	if bucket.IsEmpty() {
 		return nil
 	}
 
-	foundEntry := bucket.find(func(value utils.Any) bool {
+	foundEntry := bucket.FindNode(func(value data_structures.Any) bool {
 		if value.(*MapEntry).Key == key {
 			return true
 		}
@@ -83,7 +84,7 @@ func (m *HashMap) Remove(key utils.Any) utils.Any {
 	}
 
 	value := foundEntry.Value
-	bucket.remove(foundEntry)
+	bucket.RemoveNode(foundEntry)
 	m.size -= 1
 
 	m.ensureTresholdMet()
@@ -91,7 +92,7 @@ func (m *HashMap) Remove(key utils.Any) utils.Any {
 	return value
 }
 
-func (m *HashMap) Put(key utils.Any, value utils.Any) {
+func (m *HashMap) Put(key data_structures.Any, value data_structures.Any) {
 	bucket := m.getBucket(key)
 	bucket.Add(&MapEntry{key, value})
 	m.size += 1
@@ -132,7 +133,7 @@ func (m *HashMap) decreaseSizeAndRehash() {
 	m.buckets = newBuckets
 }
 
-func rehash(oldBuckets []*LinkedList, newBuckets []*LinkedList) {
+func rehash(oldBuckets []*list.LinkedList, newBuckets []*list.LinkedList) {
 	for _, bucket := range oldBuckets {
 		iterator := bucket.Iterator()
 		for iterator.HasNext() {
@@ -156,18 +157,18 @@ func (m HashMap) IsEmpty() bool {
 	return m.Size() == 0
 }
 
-func (m HashMap) getBucket(key utils.Any) *LinkedList {
+func (m HashMap) getBucket(key data_structures.Any) *list.LinkedList {
 	bucketIndex := getBucketIndex(key, m.Capacity())
 	return m.buckets[bucketIndex]
 }
 
-func getBucketIndex(key utils.Any, capacity int) int {
-	keyHash := utils.HashObject(key)
+func getBucketIndex(key data_structures.Any, capacity int) int {
+	keyHash := data_structures.HashObject(key)
 	return int(math.Abs(float64(keyHash % capacity)))
 }
 
-func (m HashMap) BucketDistribution() List {
-	result := NewArrayList()
+func (m HashMap) BucketDistribution() list.List {
+	result := list.NewArrayList()
 	for _, bucket := range m.buckets {
 		result.Add(bucket.Size())
 	}

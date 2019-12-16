@@ -1,4 +1,4 @@
-package utils
+package data_structures
 
 import (
 	"crypto/sha256"
@@ -35,3 +35,4 @@ func hash(data []byte) []byte {
 	h.Write([]byte(data))
 	return h.Sum(nil)
 }
+
